@@ -21,11 +21,12 @@ type note = [  OscillatorNode, GainNode ]
   
 const activeNoteMap = new Map<string, note>()
 let vibrato = false
-let decay = 0.1
-let attack = 0.1
+let decay = 0.01
+let attack = 0.01
 let monophonic = true 
 
 const handleKeydown = (e: KeyboardEvent)=>{
+  console.log(e.key)
   if(e.repeat) return
   const freq = keyToFreq.get(e.key)
   if (!freq){
