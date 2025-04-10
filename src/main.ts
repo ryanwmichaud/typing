@@ -17,12 +17,13 @@ setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 const AudioContext = window.AudioContext 
 const audioCtx = new AudioContext()
 
-type activeNote = [  OscillatorNode, GainNode ]
+type note = [  OscillatorNode, GainNode ]
   
-const activeNoteMap = new Map<string, activeNote>()
+const activeNoteMap = new Map<string, note>()
 let vibrato = false
 let decay = 0.1
 let attack = 0.1
+let monophonic = true 
 
 const handleKeydown = (e: KeyboardEvent)=>{
   if(e.repeat) return
@@ -43,6 +44,14 @@ const handleKeydown = (e: KeyboardEvent)=>{
     }
   }
   else{
+    if(monophonic){
+      for(const activeNote of activeNoteMap){
+        const note = activeNote[1]
+        rampNoteOff(note[0], note[1], decay)
+      }
+    }
+    
+    
     const currTime = audioCtx.currentTime
     const osc = audioCtx.createOscillator()
     const gain = audioCtx.createGain()
@@ -59,15 +68,19 @@ const handleKeydown = (e: KeyboardEvent)=>{
   }
 
 }
+const rampNoteOff = (osc: OscillatorNode, gain: GainNode, decay: number)=>{
+    gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime)
+    gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime+decay)
+    osc.stop(audioCtx.currentTime+decay)
+}
 
 const handleKeyup = (e: KeyboardEvent)=>{
   const note = activeNoteMap.get(e.key)
   if(note){
     const osc = note[0]
     const gain = note[1]
-    gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime)
-    gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime+decay)
-    osc.stop(audioCtx.currentTime+decay)
+    rampNoteOff(osc, gain, decay)
+    activeNoteMap.delete(e.key)
   }else{
     switch(e.key){
       case "ArrowUp":
@@ -76,6 +89,7 @@ const handleKeyup = (e: KeyboardEvent)=>{
         }
         break
 
+      
       case "ArrowDown":
         for (const note of activeNoteMap){
           note[1][0].detune.linearRampToValueAtTime(0, audioCtx.currentTime+0.07)
