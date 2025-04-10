@@ -17,28 +17,71 @@ setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 const AudioContext = window.AudioContext 
 const audioCtx = new AudioContext()
 
-const activeOsc = new Map<string, OscillatorNode>()
-
+type activeNote = [  OscillatorNode, GainNode ]
+  
+const activeNoteMap = new Map<string, activeNote>()
+let vibrato = false
+let decay = 0.1
+let attack = 0.1
 
 const handleKeydown = (e: KeyboardEvent)=>{
   if(e.repeat) return
   const freq = keyToFreq.get(e.key)
-  if (!freq) return
+  if (!freq){
+    switch(e.key){
+      case "ArrowDown":
+        for (const entry of activeNoteMap){
+          entry[1][0].detune.linearRampToValueAtTime(200, audioCtx.currentTime+0.07)
+        }
+        break
 
-  const currTime = audioCtx.currentTime
-  const osc = audioCtx.createOscillator()
-  activeOsc.set(e.key, osc)
-  osc.type = 'sine'
-  osc.frequency.setValueAtTime(freq, currTime)
+      case "ArrowUp":
+        for (const entry of activeNoteMap){
+          entry[1][0].detune.linearRampToValueAtTime(100, audioCtx.currentTime+0.07)
+        }
+        break
+    }
+  }
+  else{
+    const currTime = audioCtx.currentTime
+    const osc = audioCtx.createOscillator()
+    const gain = audioCtx.createGain()
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(freq, currTime)
+    osc.connect(gain)
+    gain.connect(audioCtx.destination)
 
-  osc.connect(audioCtx.destination)
-  osc.start(currTime)
+    activeNoteMap.set(e.key, [osc, gain])
+
+    gain.gain.setValueAtTime(0, currTime)
+    gain.gain.linearRampToValueAtTime(1, currTime+attack)
+    osc.start(currTime)
+  }
+
 }
 
 const handleKeyup = (e: KeyboardEvent)=>{
-  const osc = activeOsc.get(e.key)
-  if(osc){
-    osc.stop(audioCtx.currentTime)
+  const note = activeNoteMap.get(e.key)
+  if(note){
+    const osc = note[0]
+    const gain = note[1]
+    gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime)
+    gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime+decay)
+    osc.stop(audioCtx.currentTime+decay)
+  }else{
+    switch(e.key){
+      case "ArrowUp":
+        for (const note of activeNoteMap){
+          note[1][0].detune.linearRampToValueAtTime(0, audioCtx.currentTime+0.07)
+        }
+        break
+
+      case "ArrowDown":
+        for (const note of activeNoteMap){
+          note[1][0].detune.linearRampToValueAtTime(0, audioCtx.currentTime+0.07)
+        }
+        break
+    }
   }
 }
 
