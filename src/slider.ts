@@ -6,8 +6,8 @@ export function setupSlider( slider: HTMLInputElement, display: HTMLElement, onC
     onChange(value)
   })
 
+  //init
   onChange(Number(slider.value))
   display.textContent = slider.value
-
   
 }

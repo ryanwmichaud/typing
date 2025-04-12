@@ -2,11 +2,10 @@ import './style.css'
 
 import {setupSlider} from './slider.ts'
 import {keyToFreq} from   './freq.ts'
+import { setupToggleButon } from './toggleButton.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
-
-      <button id="counter" type="button"></button>
       
       <label for="attack"> Attack </label>
       <input id="attack-slider" 
@@ -27,6 +26,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         step="0.01"/>
       <p id="decay-value"> </p>
 
+      <button id="monophonic-button" >Monophonic<button/>
+
     </div>
   </div>
 `
@@ -43,8 +44,7 @@ let attack = 0.01
 let monophonic = true 
 
 const handleKeydown = (e: KeyboardEvent)=>{
-  console.log(e.key)
-  if(e.repeat) return
+  if(e.repeat) {return}
   const freq = keyToFreq.get(e.key)
   if (!freq){
     switch(e.key){
@@ -63,10 +63,7 @@ const handleKeydown = (e: KeyboardEvent)=>{
   }
   else{
     if(monophonic){
-      for(const activeNote of activeNoteMap){
-        const note = activeNote[1]
-        rampNoteOff(note[0], note[1], decay)
-      }
+      stopAll()
     }
     
     
@@ -83,6 +80,7 @@ const handleKeydown = (e: KeyboardEvent)=>{
     gain.gain.setValueAtTime(0, currTime)
     gain.gain.linearRampToValueAtTime(1, currTime+attack)
     osc.start(currTime)
+    console.log(activeNoteMap)
   }
 }
 const rampNoteOff = (osc: OscillatorNode, gain: GainNode, decay: number)=>{
@@ -114,18 +112,28 @@ const handleKeyup = (e: KeyboardEvent)=>{
     }
   }
 }
+const stopAll = ()=>{
+  for(const activeNote of activeNoteMap){
+    const note = activeNote[1]
+    rampNoteOff(note[0], note[1], decay)
+  }
+  activeNoteMap.clear()
+
+}
 
 
 document.addEventListener('keydown', handleKeydown)
 document.addEventListener('keyup', handleKeyup)
+window.addEventListener('blur', stopAll)
 
 const attackSlider = document.getElementById('attack-slider') as HTMLInputElement
 const attackValue = document.getElementById('attack-value') as HTMLParagraphElement
 const decaySlider = document.getElementById('decay-slider') as HTMLInputElement
 const decayValue = document.getElementById('decay-value') as HTMLParagraphElement
-
+const monophonicButton = document.getElementById('monophonic-button') as HTMLButtonElement
 setupSlider(attackSlider, attackValue, (value)=>{attack = value})
 setupSlider(decaySlider, decayValue, (value)=>{decay = value})
+setupToggleButon(monophonicButton, true, (newState: boolean)=> {monophonic = newState})
 
 //setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 //setupAttack(document.querySelector<HTMLInputElement>('#attack')!)
