@@ -55,7 +55,8 @@ const noteToFreq = new Map<string, number>([
     ['G',5],
     ['D',5],
     ['A',4],
-    ['E',4]
+    ['E',4],
+    ['B',3]
   ]
   const keysx = [
     ['2','3','4','5','6','7','8','9','0','-','='],
@@ -69,13 +70,13 @@ const noteToFreq = new Map<string, number>([
     ['Escape','Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\'],
     ['F1','CapsLock','a','s','d','f','g','h','j','k','l',';','\'','Enter','Help'],
     ['F2','Shift', 'z','x','c','v','b','n','m',',','.','/','Shift','','Delete'],
-    ['F3', 'Control','Meta','Alt','F5','F6','F8','Space','F9','F10','F11','F12','ArrowLeft','','ArrowRight']
+    ['F3', 'Control','Meta','Alt','F5','F6','F8','','F9','F10','F11','F12','ArrowLeft','','ArrowRight']
   
   ]
   
   export let keyToFreq = new Map<string, number>()
   
-  for (let stringIndex=0; stringIndex<4; stringIndex++){
+  for (let stringIndex=0; stringIndex<keys.length; stringIndex++){
     const row = keys[stringIndex]
     const openNoteIndex = noteNames.indexOf(tuning[stringIndex][0])
     const openOctave = tuning[stringIndex][1]
