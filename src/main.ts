@@ -6,8 +6,10 @@ import { setupToggleButon } from './toggleButton.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
+
+      <select name="string-1-note">
       
-      <label for="attack"> Attack </label>
+      <label for="attack-slider"> Attack </label>
       <input id="attack-slider" 
         name="attack"
         type="range"
@@ -17,7 +19,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         step="0.01"/>
       <p id="attack-value"> </p>
 
-      <label for="decay"> Decay </label>
+      <label for="decay-slider"> Decay </label>
       <input id="decay-slider" 
         type="range"
         value="0.01"
@@ -44,6 +46,7 @@ let attack = 0.01
 let monophonic = true 
 
 const handleKeydown = (e: KeyboardEvent)=>{
+  console.log(e.key)
   if(e.repeat) {return}
   const freq = keyToFreq.get(e.key)
   if (!freq){
@@ -80,7 +83,7 @@ const handleKeydown = (e: KeyboardEvent)=>{
     gain.gain.setValueAtTime(0, currTime)
     gain.gain.linearRampToValueAtTime(1, currTime+attack)
     osc.start(currTime)
-    console.log(activeNoteMap)
+    //console.log(activeNoteMap)
   }
 }
 const rampNoteOff = (osc: OscillatorNode, gain: GainNode, decay: number)=>{
