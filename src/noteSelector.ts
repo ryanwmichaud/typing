@@ -1,7 +1,7 @@
 
 
 
-export function setUpNoteSelector(container: HTMLElement, index: number){
+export function setUpNoteSelector(container: HTMLElement, index: number, onChange: ()=>void ){
 
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     const octaves = ['1', '2', '3', '4', '5', '6', '7']
@@ -18,6 +18,8 @@ export function setUpNoteSelector(container: HTMLElement, index: number){
             option.textContent = name
             selectElement.appendChild(option)
         })
+
+        selectElement.addEventListener('change', ()=>{onChange()})
         container.appendChild(selectElement)
     }
 

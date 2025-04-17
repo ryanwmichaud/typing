@@ -1,7 +1,7 @@
 import './style.css'
 
 import {setupSlider} from './slider.ts'
-import {keyToFreq} from   './freq.ts'
+import {keyToFreq, updateKeyToFreq} from   './freq.ts'
 import { setupToggleButon } from './toggleButton.ts'
 import { setUpNoteSelector } from './noteSelector.ts'
 
@@ -146,10 +146,10 @@ const attackValue = document.getElementById('attack-value') as HTMLParagraphElem
 const decaySlider = document.getElementById('decay-slider') as HTMLInputElement
 const decayValue = document.getElementById('decay-value') as HTMLParagraphElement
 const monophonicButton = document.getElementById('monophonic-button') as HTMLButtonElement
-const tuning = document.getElementById('tuning') as HTMLElement
-Array.from(tuning.children).forEach((child, index) => {
+const tuningElement = document.getElementById('tuning') as HTMLElement
+Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
-  setUpNoteSelector(htmlChild, index) 
+  setUpNoteSelector(htmlChild, index, ()=>{console.log('selection made')})
 });
 setupSlider(attackSlider, attackValue, (value)=>{attack = value})
 setupSlider(decaySlider, decayValue, (value)=>{decay = value})

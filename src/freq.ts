@@ -74,12 +74,14 @@ const noteToFreq = new Map<string, number>([
   
   ]
   
-  export let keyToFreq = new Map<string, number>()
-  
+export let keyToFreq = new Map<string, number>()
+
+export const updateKeyToFreq = (newTuning: pitchedNote[])=>{
+  keyToFreq.clear()
   for (let stringIndex=0; stringIndex<keys.length; stringIndex++){
     const row = keys[stringIndex]
-    const openNoteIndex = noteNames.indexOf(tuning[stringIndex][0])
-    const openOctave = tuning[stringIndex][1]
+    const openNoteIndex = noteNames.indexOf(newTuning[stringIndex][0])
+    const openOctave = newTuning[stringIndex][1]
     for(let keyIndex=0; keyIndex<row.length; keyIndex++){
       const key = row[keyIndex]
       const noteName = noteNames[(openNoteIndex+keyIndex)%12]
@@ -89,3 +91,5 @@ const noteToFreq = new Map<string, number>([
     }
   
   }
+}
+updateKeyToFreq(tuning)
