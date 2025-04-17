@@ -16,7 +16,7 @@ const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', '
   
 export type pitchedNote = [string, number]
  
-const guitar: pitchedNote[] = [
+export const defaultTuning: pitchedNote[] = [
   ['E',6],
   ['B',5],
   ['G',5],
@@ -29,6 +29,8 @@ const banjo: pitchedNote[] = [
   ['G',5],
   ['D',5]
 ]
+
+
 
 const keysStandard = [
   ['2','3','4','5','6','7','8','9','0','-','='],

@@ -1,13 +1,16 @@
-import { updateKeyToFreqRow } from "./freq"
+import { pitchedNote, updateKeyToFreqRow } from "./freq"
 
 
 
-export function setUpNoteSelector(container: HTMLElement, index: number){
+export function setUpNoteSelector(container: HTMLElement, index: number, defaultTuning: pitchedNote){
 
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     const octaves = ['1', '2', '3', '4', '5', '6', '7']
 
-    function setupSelect(id: string, className: string, options: string[]){
+    function setupSelect(id: string, className: string, options: string[], defaultValue:string){
+
+        container.className = 'pitched-note-selector'
+        container.id = `string-${index}-selector`
 
         const selectElement = document.createElement('select')
         selectElement.id = id 
@@ -19,7 +22,7 @@ export function setUpNoteSelector(container: HTMLElement, index: number){
             option.textContent = name
             selectElement.appendChild(option)
         })
-
+        selectElement.value = defaultValue
         selectElement.addEventListener('change', ()=>{
             const note = container.querySelector('.note-select') as HTMLSelectElement
             const octave = container.querySelector('.octave-select') as HTMLSelectElement
@@ -28,8 +31,8 @@ export function setUpNoteSelector(container: HTMLElement, index: number){
         container.appendChild(selectElement)
     }
 
-    setupSelect(`note-select-${index}`, 'note-select', noteNames)
-    setupSelect(`octave-select-${index}`, 'octave-select', octaves)
+    setupSelect(`note-select-${index}`, 'note-select', noteNames, defaultTuning[0])
+    setupSelect(`octave-select-${index}`, 'octave-select', octaves, String(defaultTuning[1]))
 
 
 

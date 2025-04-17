@@ -1,19 +1,19 @@
 import './style.css'
 
 import {setupSlider} from './slider.ts'
-import {keyToFreq, updateKeyToFreq, pitchedNote} from   './freq.ts'
+import {keyToFreq, updateKeyToFreq, pitchedNote, defaultTuning} from   './freq.ts'
 import { setupToggleButon } from './toggleButton.ts'
 import { setUpNoteSelector } from './noteSelector.ts'
 
-
 const html = /*html*/`
   <div>
-
-      <div class="tuning" id="tuning">
-        <div class="pitched-note-selector" id="string-1"></div>
-        <div class="pitched-note-selector" id="string-2"></div>
-        <div class="pitched-note-selector" id="string-3"></div>
-        <div class="pitched-note-selector" id="string-4"></div>
+      <label for='tuning-element'>Tuning</label>
+      <div class="tuning" id="tuning-element">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
 
       <label for="attack-slider"> Attack </label>
@@ -148,10 +148,10 @@ const attackValue = document.getElementById('attack-value') as HTMLParagraphElem
 const decaySlider = document.getElementById('decay-slider') as HTMLInputElement
 const decayValue = document.getElementById('decay-value') as HTMLParagraphElement
 const monophonicButton = document.getElementById('monophonic-button') as HTMLButtonElement
-const tuningElement = document.getElementById('tuning') as HTMLElement
+const tuningElement = document.getElementById('tuning-element') as HTMLElement
 Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
-  setUpNoteSelector(htmlChild, index)
+  setUpNoteSelector(htmlChild, index, defaultTuning[index] )
 });
 setupSlider(attackSlider, attackValue, (value: number)=>{attack = value})
 setupSlider(decaySlider, decayValue, (value: number)=>{decay = value})
@@ -176,4 +176,4 @@ const banjo: pitchedNote[] = [
   ['D',5]
 ]
 
-updateKeyToFreq(guitar)
+updateKeyToFreq(defaultTuning)
