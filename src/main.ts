@@ -1,13 +1,13 @@
 import './style.css'
 
-import {setupSlider} from './slider.ts'
+import {setupSlider} from './components/slider.ts'
 import {keyToFreq, updateKeyToFreq, pitchedNote, defaultTuning} from   './freq.ts'
-import { setupToggleButon } from './toggleButton.ts'
-import { setUpNoteSelector } from './noteSelector.ts'
+import { setupToggleButon } from './components/toggleButton.ts'
+import { setUpNoteSelector } from './components/noteSelector.ts'
 
 const html = /*html*/`
   <div>
-      <label for='tuning-element'>Tuning</label>
+      <p>Tuning</p>
       <div class="tuning" id="tuning-element">
         <div></div>
         <div></div>
@@ -161,19 +161,6 @@ setupToggleButon(monophonicButton, true, (newState: boolean)=> {monophonic = new
 //setupAttack(document.querySelector<HTMLInputElement>('#attack')!)
 
 
-const guitar: pitchedNote[] = [
-  ['E',6],
-  ['B',5],
-  ['G',5],
-  ['D',5],
-  ['A',4]
-]
 
-const banjo: pitchedNote[] = [
-  ['D',6],
-  ['B',5],
-  ['G',5],
-  ['D',5]
-]
 
 updateKeyToFreq(defaultTuning)

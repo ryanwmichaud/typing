@@ -1,4 +1,4 @@
-import { pitchedNote, updateKeyToFreqRow } from "./freq"
+import { pitchedNote, updateKeyToFreqRow } from "../freq"
 
 
 
