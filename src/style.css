@@ -13,6 +13,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#app {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 html {
   height: 100%;
   width: 100%;
@@ -26,18 +35,27 @@ body {
   width: 100%;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+p{
+  margin: 0;
 }
 
-#app {
-  text-align: center;
+.tuning-header{
+  margin-bottom: 5px;
+}
+
+.slider-element{
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  margin-top: 2vh;
+  margin-bottom: 2vh
+}
+
+.slider{
+  margin-right: 7px;
+}
+.slider-label{
+  margin-right: 7px;
 }
 
 .toggled-on{
@@ -54,9 +72,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+}
+
+button:hover{
+  border-color: black;
 }
 
 
