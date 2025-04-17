@@ -1,7 +1,8 @@
+import { updateKeyToFreqRow } from "./freq"
 
 
 
-export function setUpNoteSelector(container: HTMLElement, index: number, onChange: ()=>void ){
+export function setUpNoteSelector(container: HTMLElement, index: number){
 
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     const octaves = ['1', '2', '3', '4', '5', '6', '7']
@@ -19,7 +20,11 @@ export function setUpNoteSelector(container: HTMLElement, index: number, onChang
             selectElement.appendChild(option)
         })
 
-        selectElement.addEventListener('change', onChange)
+        selectElement.addEventListener('change', ()=>{
+            const note = container.querySelector('.note-select') as HTMLSelectElement
+            const octave = container.querySelector('.octave-select') as HTMLSelectElement
+            updateKeyToFreqRow([note.value, Number(octave.value)], index)
+        })
         container.appendChild(selectElement)
     }
 

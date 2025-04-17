@@ -1,7 +1,7 @@
 import './style.css'
 
 import {setupSlider} from './slider.ts'
-import {keyToFreq, updateKeyToFreq} from   './freq.ts'
+import {keyToFreq, updateKeyToFreq, pitchedNote} from   './freq.ts'
 import { setupToggleButon } from './toggleButton.ts'
 import { setUpNoteSelector } from './noteSelector.ts'
 
@@ -54,6 +54,8 @@ let vibrato = false
 let decay = 0.01
 let attack = 0.01
 let monophonic = true 
+
+
 
 const handleKeydown = (e: KeyboardEvent)=>{
   console.log(e.key)
@@ -149,13 +151,29 @@ const monophonicButton = document.getElementById('monophonic-button') as HTMLBut
 const tuningElement = document.getElementById('tuning') as HTMLElement
 Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
-  setUpNoteSelector(htmlChild, index, ()=>{
-    updateKeyToFreq([['A',4],['D',5],['A',5],['D',6]])
-  })
+  setUpNoteSelector(htmlChild, index)
 });
-setupSlider(attackSlider, attackValue, (value)=>{attack = value})
-setupSlider(decaySlider, decayValue, (value)=>{decay = value})
+setupSlider(attackSlider, attackValue, (value: number)=>{attack = value})
+setupSlider(decaySlider, decayValue, (value: number)=>{decay = value})
 setupToggleButon(monophonicButton, true, (newState: boolean)=> {monophonic = newState})
 
 //setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 //setupAttack(document.querySelector<HTMLInputElement>('#attack')!)
+
+
+const guitar: pitchedNote[] = [
+  ['E',6],
+  ['B',5],
+  ['G',5],
+  ['D',5],
+  ['A',4]
+]
+
+const banjo: pitchedNote[] = [
+  ['D',6],
+  ['B',5],
+  ['G',5],
+  ['D',5]
+]
+
+updateKeyToFreq(guitar)

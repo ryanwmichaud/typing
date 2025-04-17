@@ -14,7 +14,7 @@ const noteToFreq = new Map<string, number>([
   ])
 const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
   
-type pitchedNote = [string, number]
+export type pitchedNote = [string, number]
  
 const guitar: pitchedNote[] = [
   ['E',6],
@@ -48,8 +48,8 @@ const keys = [
 
 export let keyToFreq = new Map<string, number>()
 
-export const updateKeyToFreq = (newTuning: pitchedNote[])=>{
-  for (let stringIndex=0; stringIndex<newTuning.length; stringIndex++){
+export const updateKeyToFreq = (newTuning: pitchedNote[])=>{              
+  for (let stringIndex=0; stringIndex<newTuning.length; stringIndex++){   
     const row = keys[stringIndex]
     const openNoteIndex = noteNames.indexOf(newTuning[stringIndex][0])
     const openOctave = newTuning[stringIndex][1]
@@ -60,10 +60,21 @@ export const updateKeyToFreq = (newTuning: pitchedNote[])=>{
       const freq = noteToFreq.get(noteName)! * (2**octave)
       keyToFreq.set(key, freq)
     }
-  
   }
 }
-updateKeyToFreq(guitar)
+
+export const updateKeyToFreqRow = (newNote: pitchedNote, stringIndex: number)=>{              
+    const row = keys[stringIndex]
+    const openNoteIndex = noteNames.indexOf(newNote[0])
+    const openOctave = newNote[1]
+    for(let keyIndex=0; keyIndex<row.length; keyIndex++){
+      const key = row[keyIndex]
+      const noteName = noteNames[(openNoteIndex+keyIndex)%12]
+      const octave = openOctave + Math.floor((openNoteIndex+keyIndex)/12)
+      const freq = noteToFreq.get(noteName)! * (2**octave)
+      keyToFreq.set(key, freq)
+  }
+}
  
  /*
   const fretToNote: Record<string, string> = {
@@ -93,11 +104,3 @@ updateKeyToFreq(guitar)
     ']': 'A#' 
   }
   */
-  /*
-  const tuning: pitchedNote[] = [
-    ['D',5],
-    ['B',4],
-    ['G',4],
-    ['D', 4]
-  ]
-*/
