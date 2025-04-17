@@ -3,12 +3,19 @@ import './style.css'
 import {setupSlider} from './slider.ts'
 import {keyToFreq} from   './freq.ts'
 import { setupToggleButon } from './toggleButton.ts'
+import { setUpNoteSelector } from './noteSelector.ts'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+
+const html = /*html*/`
   <div>
 
-      <select name="string-1-note">
-      
+      <div class="tuning" id="tuning">
+        <div class="pitched-note-selector" id="string-1"></div>
+        <div class="pitched-note-selector" id="string-2"></div>
+        <div class="pitched-note-selector" id="string-3"></div>
+        <div class="pitched-note-selector" id="string-4"></div>
+      </div>
+
       <label for="attack-slider"> Attack </label>
       <input id="attack-slider" 
         name="attack"
@@ -28,11 +35,14 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         step="0.01"/>
       <p id="decay-value"> </p>
 
-      <button id="monophonic-button" >Monophonic<button/>
+      <button id="monophonic-button" >Monophonic</button>
 
     </div>
   </div>
 `
+
+ 
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = html 
 
 const AudioContext = window.AudioContext 
 const audioCtx = new AudioContext()
@@ -73,7 +83,7 @@ const handleKeydown = (e: KeyboardEvent)=>{
     const currTime = audioCtx.currentTime
     const osc = audioCtx.createOscillator()
     const gain = audioCtx.createGain()
-    osc.type = 'sine'
+    osc.type = 'sawtooth'
     osc.frequency.setValueAtTime(freq, currTime)
     osc.connect(gain)
     gain.connect(audioCtx.destination)
@@ -129,11 +139,18 @@ document.addEventListener('keydown', handleKeydown)
 document.addEventListener('keyup', handleKeyup)
 window.addEventListener('blur', stopAll)
 
+
+
 const attackSlider = document.getElementById('attack-slider') as HTMLInputElement
 const attackValue = document.getElementById('attack-value') as HTMLParagraphElement
 const decaySlider = document.getElementById('decay-slider') as HTMLInputElement
 const decayValue = document.getElementById('decay-value') as HTMLParagraphElement
 const monophonicButton = document.getElementById('monophonic-button') as HTMLButtonElement
+const tuning = document.getElementById('tuning') as HTMLElement
+Array.from(tuning.children).forEach((child, index) => {
+  const htmlChild = child as HTMLElement
+  setUpNoteSelector(htmlChild, index) 
+});
 setupSlider(attackSlider, attackValue, (value)=>{attack = value})
 setupSlider(decaySlider, decayValue, (value)=>{decay = value})
 setupToggleButon(monophonicButton, true, (newState: boolean)=> {monophonic = newState})

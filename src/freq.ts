@@ -52,11 +52,11 @@ const noteToFreq = new Map<string, number>([
   ]
 */
   const tuning: pitchedNote[] = [
+   ['E',6],
+    ['B',5],
     ['G',5],
     ['D',5],
-    ['A',4],
-    ['E',4],
-    ['B',3]
+    ['A',4]
   ]
   const keysx = [
     ['2','3','4','5','6','7','8','9','0','-','='],
@@ -70,7 +70,7 @@ const noteToFreq = new Map<string, number>([
     ['Escape','Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\'],
     ['F1','CapsLock','a','s','d','f','g','h','j','k','l',';','\'','Enter','Help'],
     ['F2','Shift', 'z','x','c','v','b','n','m',',','.','/','Shift','','Delete'],
-    ['F3', 'Control','Meta','Alt','F5','F6','F8','','F9','F10','F11','F12','ArrowLeft','','ArrowRight']
+    ['F3', 'Control','Meta','Alt','F5','F6','F8',' ','F9','F10','F11','F12','ArrowLeft','','ArrowRight']
   
   ]
   
