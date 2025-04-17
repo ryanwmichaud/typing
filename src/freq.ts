@@ -12,9 +12,60 @@ const noteToFreq = new Map<string, number>([
     ['A#', 14.567617], 
     ['B', 15.433853 ]
   ])
-  const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
   
-  /*
+type pitchedNote = [string, number]
+ 
+const guitar: pitchedNote[] = [
+  ['E',6],
+  ['B',5],
+  ['G',5],
+  ['D',5],
+  ['A',4]
+]
+const banjo: pitchedNote[] = [
+  ['D',6],
+  ['B',5],
+  ['G',5],
+  ['D',5]
+]
+
+const keysStandard = [
+  ['2','3','4','5','6','7','8','9','0','-','='],
+  ['q','w','e','r','t','y','u','i','o','p','[',']'],
+  ['a','s','d','f','g','h','j','k','l',';','\''],
+  ['Shift', 'z','x','c','v','b','n','m',',','.','/']
+
+]
+const keys = [
+  ['`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace','Home'],
+  ['Escape','Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\'],
+  ['F1','CapsLock','a','s','d','f','g','h','j','k','l',';','\'','Enter','Help'],
+  ['F2','Shift', 'z','x','c','v','b','n','m',',','.','/','Shift','','Delete'],
+  ['F3', 'Control','Meta','Alt','F5','F6','F8',' ','F9','F10','F11','F12','ArrowLeft','','ArrowRight']
+
+]
+
+export let keyToFreq = new Map<string, number>()
+
+export const updateKeyToFreq = (newTuning: pitchedNote[])=>{
+  for (let stringIndex=0; stringIndex<newTuning.length; stringIndex++){
+    const row = keys[stringIndex]
+    const openNoteIndex = noteNames.indexOf(newTuning[stringIndex][0])
+    const openOctave = newTuning[stringIndex][1]
+    for(let keyIndex=0; keyIndex<row.length; keyIndex++){
+      const key = row[keyIndex]
+      const noteName = noteNames[(openNoteIndex+keyIndex)%12]
+      const octave = openOctave + Math.floor((openNoteIndex+keyIndex)/12)
+      const freq = noteToFreq.get(noteName)! * (2**octave)
+      keyToFreq.set(key, freq)
+    }
+  
+  }
+}
+updateKeyToFreq(guitar)
+ 
+ /*
   const fretToNote: Record<string, string> = {
     '1': 'E',
     '2': 'F', 
@@ -42,7 +93,6 @@ const noteToFreq = new Map<string, number>([
     ']': 'A#' 
   }
   */
-  type pitchedNote = [string, number]
   /*
   const tuning: pitchedNote[] = [
     ['D',5],
@@ -51,45 +101,3 @@ const noteToFreq = new Map<string, number>([
     ['D', 4]
   ]
 */
-  const tuning: pitchedNote[] = [
-   ['E',6],
-    ['B',5],
-    ['G',5],
-    ['D',5],
-    ['A',4]
-  ]
-  const keysx = [
-    ['2','3','4','5','6','7','8','9','0','-','='],
-    ['q','w','e','r','t','y','u','i','o','p','[',']'],
-    ['a','s','d','f','g','h','j','k','l',';','\''],
-    ['Shift', 'z','x','c','v','b','n','m',',','.','/']
-  
-  ]
-  const keys = [
-    ['`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace','Home'],
-    ['Escape','Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\'],
-    ['F1','CapsLock','a','s','d','f','g','h','j','k','l',';','\'','Enter','Help'],
-    ['F2','Shift', 'z','x','c','v','b','n','m',',','.','/','Shift','','Delete'],
-    ['F3', 'Control','Meta','Alt','F5','F6','F8',' ','F9','F10','F11','F12','ArrowLeft','','ArrowRight']
-  
-  ]
-  
-export let keyToFreq = new Map<string, number>()
-
-export const updateKeyToFreq = (newTuning: pitchedNote[])=>{
-  keyToFreq.clear()
-  for (let stringIndex=0; stringIndex<keys.length; stringIndex++){
-    const row = keys[stringIndex]
-    const openNoteIndex = noteNames.indexOf(newTuning[stringIndex][0])
-    const openOctave = newTuning[stringIndex][1]
-    for(let keyIndex=0; keyIndex<row.length; keyIndex++){
-      const key = row[keyIndex]
-      const noteName = noteNames[(openNoteIndex+keyIndex)%12]
-      const octave = openOctave + Math.floor((openNoteIndex+keyIndex)/12)
-      const freq = noteToFreq.get(noteName)! * (2**octave)
-      keyToFreq.set(key, freq)
-    }
-  
-  }
-}
-updateKeyToFreq(tuning)

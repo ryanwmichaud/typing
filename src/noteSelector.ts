@@ -19,7 +19,7 @@ export function setUpNoteSelector(container: HTMLElement, index: number, onChang
             selectElement.appendChild(option)
         })
 
-        selectElement.addEventListener('change', ()=>{onChange()})
+        selectElement.addEventListener('change', onChange)
         container.appendChild(selectElement)
     }
 

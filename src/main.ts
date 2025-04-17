@@ -149,7 +149,9 @@ const monophonicButton = document.getElementById('monophonic-button') as HTMLBut
 const tuningElement = document.getElementById('tuning') as HTMLElement
 Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
-  setUpNoteSelector(htmlChild, index, ()=>{console.log('selection made')})
+  setUpNoteSelector(htmlChild, index, ()=>{
+    updateKeyToFreq([['A',4],['D',5],['A',5],['D',6]])
+  })
 });
 setupSlider(attackSlider, attackValue, (value)=>{attack = value})
 setupSlider(decaySlider, decayValue, (value)=>{decay = value})
