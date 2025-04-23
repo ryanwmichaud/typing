@@ -4,18 +4,29 @@ import {setupSlider} from './components/slider.ts'
 import {keyToFreq, updateKeyToFreq, pitchedNote, defaultTuning} from   './freq.ts'
 import { setupToggleButon } from './components/toggleButton.ts'
 import { setUpNoteSelector } from './components/noteSelector.ts'
+import { setupDropDown } from './components/dropDown.ts'
 
 const html = /*html*/`
   <div>
     <input class='textbox'>
     <div class='content'>
         <p class='tuning-header'>Tuning</p>
-        <div class="tuning" id="tuning-element">
+        <div class="tuning-element" id="tuning-element">
           <div></div>
           <div></div>
           <div></div>
           <div></div>
           <div></div>
+        </div>
+
+        <div class='waveform-element'>
+          <label class='waveform-label'>Waveform</label>
+          <select id='waveform-select'>
+            <option value="sine">Sine</option>
+            <option value="square">Square</option>
+            <option value="triangle">Triangle</option>
+            <option value="sawtooth">Sawtooth</option>
+          </select>
         </div>
         
         <div id='atack-element' class='slider-element'>
@@ -57,10 +68,10 @@ const audioCtx = new AudioContext()
 type note = [  OscillatorNode, GainNode ]
   
 const activeNoteMap = new Map<string, note>()
-let vibrato = false
 let decay = 0.01
 let attack = 0.01
 let monophonic = true 
+let waveform: OscillatorType = 'sine'
 
 
 
@@ -91,7 +102,7 @@ const handleKeydown = (e: KeyboardEvent)=>{
     const currTime = audioCtx.currentTime
     const osc = audioCtx.createOscillator()
     const gain = audioCtx.createGain()
-    osc.type = 'sine'
+    osc.type = waveform
     osc.frequency.setValueAtTime(freq, currTime)
     osc.connect(gain)
     gain.connect(audioCtx.destination)
@@ -155,10 +166,12 @@ const decaySlider = document.getElementById('decay-slider') as HTMLInputElement
 const decayValue = document.getElementById('decay-value') as HTMLParagraphElement
 const monophonicButton = document.getElementById('monophonic-button') as HTMLButtonElement
 const tuningElement = document.getElementById('tuning-element') as HTMLElement
+const waveformSelect = document.getElementById('waveform-select') as HTMLSelectElement
 Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
   setUpNoteSelector(htmlChild, index, defaultTuning[index] )
 });
+setupDropDown(waveformSelect, waveform, (value: OscillatorType)=> {waveform = value})
 setupSlider(attackSlider, attackValue, (value: number)=>{attack = value})
 setupSlider(decaySlider, decayValue, (value: number)=>{decay = value})
 setupToggleButon(monophonicButton, true, (newState: boolean)=> {monophonic = newState})

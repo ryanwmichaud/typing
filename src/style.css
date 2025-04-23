@@ -38,6 +38,8 @@ body {
 .content{
   width: 100%;
   margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .textbox{
@@ -60,11 +62,14 @@ p{
   margin: 0;
 }
 
-.tuning-header{
-  margin-bottom: 5px;
+
+.tuning-element{
+  margin-top: 3px;
+  margin-bottom: 2vh
 }
 
-.slider-element{
+
+.slider-element, .waveform-element{
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -76,7 +81,7 @@ p{
 .slider{
   margin-right: 7px;
 }
-.slider-label{
+.slider-label, .waveform-label{
   margin-right: 7px;
 }
 
