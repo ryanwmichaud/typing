@@ -7,40 +7,43 @@ import { setUpNoteSelector } from './components/noteSelector.ts'
 
 const html = /*html*/`
   <div>
-      <p class='tuning-header'>Tuning</p>
-      <div class="tuning" id="tuning-element">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      
-      <div id='atack-element' class='slider-element'>
-        <label for="attack-slider" class='slider-label'> Attack </label>
-        <input id="attack-slider" class='slider'
-          name="attack"
-          type="range"
-          value="0.01"
-          min="0.01"
-          max="0.50"
-          step="0.01"/>
-        <p id="attack-value" class='slider-value'> </p>
-      </div>
-      
-      <div id='decay-element' class='slider-element'>
-        <label for="decay-slider" class='slider-label'> Decay </label>
-        <input id="decay-slider" class='slider' 
-          type="range"
-          value="0.01"
-          min="0.01"
-          max="0.50"
-          step="0.01"/>
-        <p id="decay-value" class='slider-value'> </p>
-      </div>
-      
-      <button id="monophonic-button" >Monophonic</button>
+    <input class='textbox'>
+    <div class='content'>
+        <p class='tuning-header'>Tuning</p>
+        <div class="tuning" id="tuning-element">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        
+        <div id='atack-element' class='slider-element'>
+          <label for="attack-slider" class='slider-label'> Attack </label>
+          <input id="attack-slider" class='slider'
+            name="attack"
+            type="range"
+            value="0.01"
+            min="0.01"
+            max="0.50"
+            step="0.01"/>
+          <p id="attack-value" class='slider-value'> </p>
+        </div>
+        
+        <div id='decay-element' class='slider-element'>
+          <label for="decay-slider" class='slider-label'> Decay </label>
+          <input id="decay-slider" class='slider' 
+            type="range"
+            value="0.01"
+            min="0.01"
+            max="0.50"
+            step="0.01"/>
+          <p id="decay-value" class='slider-value'> </p>
+        </div>
+        
+        <button id="monophonic-button" >Monophonic</button>
 
+      </div>
     </div>
   </div>
 `
@@ -84,12 +87,11 @@ const handleKeydown = (e: KeyboardEvent)=>{
     if(monophonic){
       stopAll()
     }
-    
-    
+  
     const currTime = audioCtx.currentTime
     const osc = audioCtx.createOscillator()
     const gain = audioCtx.createGain()
-    osc.type = 'sawtooth'
+    osc.type = 'sine'
     osc.frequency.setValueAtTime(freq, currTime)
     osc.connect(gain)
     gain.connect(audioCtx.destination)

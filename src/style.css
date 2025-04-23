@@ -25,14 +25,35 @@
 html {
   height: 100%;
   width: 100%;
+  min-height: ;
 }
 
 body {
   margin: 0;
   display: flex;
-  place-items: center;
   height: 100%;
   width: 100%;
+}
+
+.content{
+  width: 100%;
+  margin-top: 10vh;
+}
+
+.textbox{
+  position: fixed;
+  top: 0vh;
+  margin-top: 10vh;
+  margin-left: 10vw;
+  left: 0vw;
+  width: 80vw;
+  border: none;
+  caret-color: transparent;
+  font-size: 7vh;
+
+}
+.textbox:focus{
+  outline: none; 
 }
 
 p{
@@ -47,6 +68,7 @@ p{
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   margin-top: 2vh;
   margin-bottom: 2vh
 }
