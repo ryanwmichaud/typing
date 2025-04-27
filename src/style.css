@@ -13,26 +13,28 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-#app {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
+
 
 html {
   height: 100%;
   width: 100%;
-  min-height: ;
 }
 
 body {
+margin: 0;
+}
+
+#app {
   margin: 0;
-  display: flex;
-  height: 100%;
-  width: 100%;
+  min-height: 100vh;
+  min-width: 100vw;
+
+
+
+  background-color: rgb(78, 77, 77);
+  color: rgb(255, 255, 255);
+
+
 }
 
 .content{
@@ -43,14 +45,15 @@ body {
 }
 
 .textbox{
-  position: fixed;
   top: 0vh;
-  margin-top: 10vh;
+  margin-top: 8vh;
   margin-left: 10vw;
   left: 0vw;
   width: 80vw;
   border: none;
   caret-color: transparent;
+  background-color: transparent;
+  color: white;
   font-size: 7vh;
 
 }
@@ -62,12 +65,20 @@ p{
   margin: 0;
 }
 
+.content{
+  display: flex;
+  align-items: center;
+}
+
 
 .tuning-element{
   margin-top: 3px;
   margin-bottom: 2vh
 }
 
+select{
+  border-radius: 4px;
+}
 
 .slider-element, .waveform-element{
   display: flex;
@@ -96,11 +107,13 @@ button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
+  width: fit-content;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-top: 5px;
 }
 
 button:hover{
