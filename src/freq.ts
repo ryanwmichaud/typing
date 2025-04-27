@@ -17,36 +17,25 @@ const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', '
 export type pitchedNote = [string, number]
  
 export const defaultTuning: pitchedNote[] = [
-  ['E',6],
-  ['B',5],
-  ['G',5],
-  ['D',5],
-  ['A',4]
-]
-const banjo: pitchedNote[] = [
-  ['D',6],
-  ['B',5],
-  ['G',5],
-  ['D',5]
+  ['E',5],
+  ['B',4],
+  ['G',4],
+  ['D',4],
+  ['A',3]
 ]
 
 
 
-const keysStandard = [
-  ['2','3','4','5','6','7','8','9','0','-','='],
+
+const keys = [
+  ['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11',],
+  ['1','2','3','4','5','6','7','8','9','0','-','='],
   ['q','w','e','r','t','y','u','i','o','p','[',']'],
   ['a','s','d','f','g','h','j','k','l',';','\''],
-  ['Shift', 'z','x','c','v','b','n','m',',','.','/']
+  ['z','x','c','v','b','n','m',',','.','/']
 
 ]
-const keys = [
-  ['`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace','Home'],
-  ['Escape','Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\'],
-  ['F1','CapsLock','a','s','d','f','g','h','j','k','l',';','\'','Enter','Help'],
-  ['F2','Shift', 'z','x','c','v','b','n','m',',','.','/','Shift','','Delete'],
-  ['F3', 'Control','Meta','Alt','F5','F6','F8',' ','F9','F10','F11','F12','ArrowLeft','','ArrowRight']
 
-]
 
 export let keyToFreq = new Map<string, number>()
 
@@ -64,6 +53,7 @@ export const updateKeyToFreq = (newTuning: pitchedNote[])=>{
     }
   }
 }
+
 
 export const updateKeyToFreqRow = (newNote: pitchedNote, stringIndex: number)=>{              
     const row = keys[stringIndex]

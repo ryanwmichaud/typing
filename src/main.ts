@@ -1,7 +1,7 @@
 import './style.css'
 
 import {setupSlider} from './components/slider.ts'
-import {keyToFreq, updateKeyToFreq, pitchedNote, defaultTuning} from   './freq.ts'
+import {keyToFreq, updateKeyToFreq, defaultTuning} from   './freq.ts'
 import { setupToggleButon } from './components/toggleButton.ts'
 import { setUpNoteSelector } from './components/noteSelector.ts'
 import { setupDropDown } from './components/dropDown.ts'
@@ -74,12 +74,37 @@ let monophonic = true
 let waveform: OscillatorType = 'sine'
 
 
+const rampNoteOn = (e: KeyboardEvent, freq: number, currTime:number)=>{
+  const osc = audioCtx.createOscillator()
+  const gain = audioCtx.createGain()
+  osc.type = waveform
+  osc.frequency.setValueAtTime(freq, currTime)
+  osc.connect(gain)
+  gain.connect(audioCtx.destination)
+
+  activeNoteMap.set(e.key, [osc, gain])
+
+  gain.gain.setValueAtTime(0, currTime)
+  gain.gain.linearRampToValueAtTime(1, currTime+attack)
+  osc.start(currTime)
+}
+
 
 const handleKeydown = (e: KeyboardEvent)=>{
   console.log(e.key)
   if(e.repeat) {return}
   const freq = keyToFreq.get(e.key)
-  if (!freq){
+  if (freq){
+    if(monophonic){
+      stopAll()
+    }
+  
+    const currTime = audioCtx.currentTime
+    rampNoteOn(e, freq, currTime)
+
+    //console.log(activeNoteMap)
+  }
+  else{
     switch(e.key){
       case "ArrowDown":
         for (const entry of activeNoteMap){
@@ -93,26 +118,6 @@ const handleKeydown = (e: KeyboardEvent)=>{
         }
         break
     }
-  }
-  else{
-    if(monophonic){
-      stopAll()
-    }
-  
-    const currTime = audioCtx.currentTime
-    const osc = audioCtx.createOscillator()
-    const gain = audioCtx.createGain()
-    osc.type = waveform
-    osc.frequency.setValueAtTime(freq, currTime)
-    osc.connect(gain)
-    gain.connect(audioCtx.destination)
-
-    activeNoteMap.set(e.key, [osc, gain])
-
-    gain.gain.setValueAtTime(0, currTime)
-    gain.gain.linearRampToValueAtTime(1, currTime+attack)
-    osc.start(currTime)
-    //console.log(activeNoteMap)
   }
 }
 const rampNoteOff = (osc: OscillatorNode, gain: GainNode, decay: number)=>{
