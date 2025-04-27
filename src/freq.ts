@@ -17,13 +17,13 @@ const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', '
 export type pitchedNote = [string, number]
  
 export const defaultTuning: pitchedNote[] = [
-  ['D',5],
+  ['E',5],
   ['B',4],
   ['G',4],
   ['D',4],
   ['A',3]
 ]
-
+/*
 const keys = [
   ['`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace','Home'],
   ['Escape','Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\'],
@@ -33,8 +33,7 @@ const keys = [
   ['F3', 'Control','Meta','Alt','F6','F8','F9',' ','End','','PageUp','Pagedown','ArrowLeft','','ArrowRight']
 
 ]
-
-/*
+*/
 
 const keys = [
   ['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F1',],
@@ -44,7 +43,7 @@ const keys = [
   ['z','x','c','v','b','n','m',',','.','/']
 
 ]
-*/
+
 
 export let keyToFreq = new Map<string, number>()
 
