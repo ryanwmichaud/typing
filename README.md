@@ -14,12 +14,13 @@ Use the up and down arrow keys for half and whole step pitch bends.
   * Node.js
   * Git
     
-### To Run Locally for customization
+### To Run Locally For Customization
 
 * Clone this repository
 * run `npm install` to install Node dependencies
 * `npm run dev` to start development server or `vite --port <port_number>` to run on a specific port
-* App will be served on localhost:3000 by default
+  * App will be served on localhost:3000 by default
+* Hint: you can remap to your specifc keyboard layout by editing the "keys" array in scr/freq.ts 
 
 
 
