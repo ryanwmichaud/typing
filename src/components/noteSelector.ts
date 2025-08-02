@@ -1,6 +1,6 @@
 import { pitchedNote, updateKeyToFreqRow } from '../freq.ts'
 
-export function setUpNoteSelector(container: HTMLElement, index: number, defaultTuning: pitchedNote){
+export function setUpNoteSelector(container: HTMLElement, index: number, defaultTuning: pitchedNote, InitCalibrateMode: number, setCalibrateMode: (value: number)=>void){
 
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     const octaves = ['1', '2', '3', '4', '5', '6', '7']
@@ -29,8 +29,19 @@ export function setUpNoteSelector(container: HTMLElement, index: number, default
         container.appendChild(selectElement)
     }
 
+    let calibrateMode = InitCalibrateMode
+
+
     setupSelect(`note-select-${index}`, 'note-select', noteNames, defaultTuning[0])
     setupSelect(`octave-select-${index}`, 'octave-select', octaves, String(defaultTuning[1]))
+
+    const calibrateButton = document.createElement('button')
+    calibrateButton.className = `calibrate-button`
+    calibrateButton.classList.add('calibrate-off')
+    calibrateButton.id = `calibrate-button-${index}`
+    calibrateButton.textContent = "recalibrate keys"
+    calibrateButton.addEventListener('click',()=>{ setCalibrateMode(index)})
+    container.appendChild(calibrateButton)
 
 
 

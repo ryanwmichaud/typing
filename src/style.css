@@ -103,6 +103,13 @@ select{
   background-color: lightgray;
 }
 
+.calibrate-on{
+  background-color: lightblue;
+}
+.calibrate-off{
+  background-color: lightgray;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;

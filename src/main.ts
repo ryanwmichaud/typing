@@ -93,6 +93,11 @@ const rampNoteOn = (e: KeyboardEvent, freq: number, currTime:number)=>{
 const handleKeydown = (e: KeyboardEvent)=>{
   console.log(e.key)
   if(e.repeat) {return}
+
+  if(calibrateMode>=0){
+
+  }
+
   const freq = keyToFreq.get(e.key)
   if (freq){
     if(monophonic){
@@ -172,9 +177,33 @@ const decayValue = document.getElementById('decay-value') as HTMLParagraphElemen
 const monophonicButton = document.getElementById('monophonic-button') as HTMLButtonElement
 const tuningElement = document.getElementById('tuning-element') as HTMLElement
 const waveformSelect = document.getElementById('waveform-select') as HTMLSelectElement
+
+
+let calibrateMode: number= -1
+
+const setCalibrateMode = (index: number)=>{
+
+
+  
+  if(calibrateMode === index){
+    document.getElementById(`calibrate-button-${index}`)?.classList.replace('calibrate-on','calibrate-off')
+    calibrateMode = -1
+  }else{
+    if(calibrateMode >= 0){
+    const activeButton = document.getElementById(`calibrate-button-${calibrateMode}`)
+    activeButton?.classList.replace('calibrate-on', 'calibrate-off')
+    }  
+    calibrateMode = index
+    document.getElementById(`calibrate-button-${index}`)?.classList.replace('calibrate-off','calibrate-on')
+  }
+  
+  console.log(calibrateMode)
+
+}
+
 Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
-  setUpNoteSelector(htmlChild, index, defaultTuning[index] )
+  setUpNoteSelector(htmlChild, index, defaultTuning[index], calibrateMode, setCalibrateMode)
 });
 setupDropDown(waveformSelect, waveform, (value: OscillatorType)=> {waveform = value})
 setupSlider(attackSlider, attackValue, (value: number)=>{attack = value})
