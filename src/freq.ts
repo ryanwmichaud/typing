@@ -23,6 +23,14 @@ export const defaultTuning: pitchedNote[] = [
   ['D',4],
   ['A',3]
 ]
+
+export const keys = [
+  [],
+  [],
+  [],
+  [],
+  []
+]
 /*
 const keys = [
   ['`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace','Home'],
@@ -33,9 +41,9 @@ const keys = [
   ['F3', 'Control','Meta','Alt','F6','F8','F9',' ','End','','PageUp','Pagedown','ArrowLeft','','ArrowRight']
 
 ]
-*/
 
-const keys = [
+
+export const keys = [
   ['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11',],
   ['1','2','3','4','5','6','7','8','9','0','-','='],
   ['q','w','e','r','t','y','u','i','o','p','[',']'],
@@ -43,7 +51,7 @@ const keys = [
   ['z','x','c','v','b','n','m',',','.','/']
 
 ]
-
+*/
 
 export let keyToFreq = new Map<string, number>()
 
@@ -63,7 +71,7 @@ export const updateKeyToFreq = (newTuning: pitchedNote[])=>{
 }
 
 
-export const updateKeyToFreqRow = (newNote: pitchedNote, stringIndex: number)=>{              
+export const updateKeyToFreqRow = (stringIndex: number, newNote: pitchedNote) => {              
     const row = keys[stringIndex]
     const openNoteIndex = noteNames.indexOf(newNote[0])
     const openOctave = newNote[1]
@@ -75,7 +83,15 @@ export const updateKeyToFreqRow = (newNote: pitchedNote, stringIndex: number)=>{
       keyToFreq.set(key, freq)
   }
 }
- 
+
+export const clearKeyRow = (index: number)=>{
+  keys[index] = []
+} 
+
+export const appendToKeyRow = (index: number, key: string)=>{
+  keys[index].push(key)
+}
+
  /*
   const fretToNote: Record<string, string> = {
     '1': 'E',

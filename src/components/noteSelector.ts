@@ -24,13 +24,10 @@ export function setUpNoteSelector(container: HTMLElement, index: number, default
         selectElement.addEventListener('change', ()=>{
             const note = container.querySelector('.note-select') as HTMLSelectElement
             const octave = container.querySelector('.octave-select') as HTMLSelectElement
-            updateKeyToFreqRow([note.value, Number(octave.value)], index)
+            updateKeyToFreqRow(index, [note.value, Number(octave.value)])
         })
         container.appendChild(selectElement)
     }
-
-    let calibrateMode = InitCalibrateMode
-
 
     setupSelect(`note-select-${index}`, 'note-select', noteNames, defaultTuning[0])
     setupSelect(`octave-select-${index}`, 'octave-select', octaves, String(defaultTuning[1]))
@@ -40,7 +37,7 @@ export function setUpNoteSelector(container: HTMLElement, index: number, default
     calibrateButton.classList.add('calibrate-off')
     calibrateButton.id = `calibrate-button-${index}`
     calibrateButton.textContent = "recalibrate keys"
-    calibrateButton.addEventListener('click',()=>{ setCalibrateMode(index)})
+    calibrateButton.addEventListener('click',()=>{setCalibrateMode(index)})
     container.appendChild(calibrateButton)
 
 

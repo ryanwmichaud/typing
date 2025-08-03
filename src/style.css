@@ -103,6 +103,10 @@ select{
   background-color: lightgray;
 }
 
+.calibrate-button{
+  height: 100%;
+}
+
 .calibrate-on{
   background-color: lightblue;
 }

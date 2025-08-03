@@ -1,7 +1,7 @@
 import './style.css'
 
 import {setupSlider} from './components/slider.ts'
-import {keyToFreq, updateKeyToFreq, defaultTuning} from   './freq.ts'
+import {keyToFreq, updateKeyToFreq, updateKeyToFreqRow, defaultTuning, clearKeyRow, appendToKeyRow, keys} from   './freq.ts'
 import { setupToggleButon } from './components/toggleButton.ts'
 import { setUpNoteSelector } from './components/noteSelector.ts'
 import { setupDropDown } from './components/dropDown.ts'
@@ -9,6 +9,7 @@ import { setupDropDown } from './components/dropDown.ts'
 const html = /*html*/`
   <div>
     <input class='textbox'>
+    <p id='prompt' class='prompt'></p> 
     <div class='content'>
         <p class='tuning-header'>Tuning</p>
         <div class="tuning-element" id="tuning-element">
@@ -73,6 +74,9 @@ let attack = 0.01
 let monophonic = true 
 let waveform: OscillatorType = 'sine'
 
+let fretCount = 0
+const promptBox = document.getElementById('prompt')
+
 
 const rampNoteOn = (e: KeyboardEvent, freq: number, currTime:number)=>{
   const osc = audioCtx.createOscillator()
@@ -95,7 +99,13 @@ const handleKeydown = (e: KeyboardEvent)=>{
   if(e.repeat) {return}
 
   if(calibrateMode>=0){
+    appendToKeyRow(calibrateMode, e.key)
+    console.log(keys)
+    
+    fretCount += 1
+    promptBox.textContent=`play string ${calibrateMode} fret ${fretCount}`
 
+    return
   }
 
   const freq = keyToFreq.get(e.key)
@@ -125,6 +135,8 @@ const handleKeydown = (e: KeyboardEvent)=>{
     }
   }
 }
+
+
 const rampNoteOff = (osc: OscillatorNode, gain: GainNode, decay: number)=>{
     gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime)
     gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime+decay)
@@ -182,19 +194,29 @@ const waveformSelect = document.getElementById('waveform-select') as HTMLSelectE
 let calibrateMode: number= -1
 
 const setCalibrateMode = (index: number)=>{
-
-
   
   if(calibrateMode === index){
+    //turn off active calibration and update keytofreqrow
     document.getElementById(`calibrate-button-${index}`)?.classList.replace('calibrate-on','calibrate-off')
+    let noteSelect = document.getElementById(`note-select-${calibrateMode}`) as HTMLSelectElement
+    let octaveSelect = document.getElementById(`octave-select-${calibrateMode}`) as HTMLSelectElement
+    updateKeyToFreqRow(index, [noteSelect.value, Number(octaveSelect.value) ])
     calibrateMode = -1
+
   }else{
+    //turn off old calibration if on
     if(calibrateMode >= 0){
     const activeButton = document.getElementById(`calibrate-button-${calibrateMode}`)
     activeButton?.classList.replace('calibrate-on', 'calibrate-off')
     }  
+    //turn on new calibration
+    fretCount = 0
+    
     calibrateMode = index
+    clearKeyRow(index)
     document.getElementById(`calibrate-button-${index}`)?.classList.replace('calibrate-off','calibrate-on')
+
+    promptBox.textContent=`play string ${calibrateMode} fret ${fretCount}`
   }
   
   console.log(calibrateMode)
