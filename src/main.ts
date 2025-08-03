@@ -8,8 +8,8 @@ import { setupDropDown } from './components/dropDown.ts'
 
 const html = /*html*/`
   <div>
-    <input class='textbox'>
-    <p id='prompt' class='prompt'></p> 
+    <input class='textbox' id='textbox-1'>
+    <p class='textbox' id='textbox-2'>
     <div class='content'>
         <p class='tuning-header'>Tuning</p>
         <div class="tuning-element" id="tuning-element">
@@ -53,7 +53,7 @@ const html = /*html*/`
           <p id="decay-value" class='slider-value'> </p>
         </div>
         
-        <button id="monophonic-button" >Monophonic</button>
+        <button id="monophonic-button" class='synth-button'>Monophonic</button>
 
       </div>
     </div>
@@ -75,8 +75,8 @@ let monophonic = true
 let waveform: OscillatorType = 'sine'
 
 let fretCount = 0
-const promptBox = document.getElementById('prompt')
-
+const textbox1 = document.getElementById('textbox-1') as HTMLInputElement
+const textbox2 = document.getElementById('textbox-2') as HTMLParagraphElement
 
 const rampNoteOn = (e: KeyboardEvent, freq: number, currTime:number)=>{
   const osc = audioCtx.createOscillator()
@@ -107,7 +107,6 @@ const stopAll = ()=>{
 }
 
 const handleKeydown = (e: KeyboardEvent)=>{
-  console.log(e.key)
   if(e.repeat) {return}
 
   if(calibrateMode>=0){
@@ -124,11 +123,10 @@ const handleKeydown = (e: KeyboardEvent)=>{
     if(monophonic){
       stopAll()
     }
-  
+
     const currTime = audioCtx.currentTime
     rampNoteOn(e, freq, currTime)
 
-    //console.log(activeNoteMap)
   }
   else{
     switch(e.key){
@@ -177,22 +175,20 @@ window.addEventListener('blur', stopAll)
 
 
 
-const attackSlider = document.getElementById('attack-slider') as HTMLInputElement
-const attackValue = document.getElementById('attack-value') as HTMLParagraphElement
-const decaySlider = document.getElementById('decay-slider') as HTMLInputElement
-const decayValue = document.getElementById('decay-value') as HTMLParagraphElement
-const monophonicButton = document.getElementById('monophonic-button') as HTMLButtonElement
-const tuningElement = document.getElementById('tuning-element') as HTMLElement
-const waveformSelect = document.getElementById('waveform-select') as HTMLSelectElement
-
 
 let calibrateMode: number= -1
 
-
+const resetPropmt = ()=>{
+  if(textbox1){textbox1.value=`Type to play`}
+  else{console.error('textbox1 is null')}
+  if(textbox2){textbox2.textContent=`Click calibration buttons to set keys for each string`}
+  else{console.error('textbox2 is null')} 
+}
 const updatePrompt = ()=>{
-  if(promptBox){promptBox.textContent=`play string ${calibrateMode} fret ${fretCount+1}`}
-  else{console.log('promptbox is null')}
-
+  if(textbox1){textbox1.value=`Play string ${calibrateMode}, fret ${fretCount+1}`}
+  else{console.error('textbox1 is null')}
+  if(textbox2){textbox2.textContent=`turn off calibration or calibrate new row to save`}
+  else{console.error('textbox2 is null')}
 }
 
 const finishRowCalibration = (index: number)=>{
@@ -205,27 +201,34 @@ const finishRowCalibration = (index: number)=>{
 const handleCalibrateButton = (index: number)=>{
   
   if(calibrateMode === index){
-    //turn off active calibration and update keytofreqrow
+    //finish active calibration and return to playing
     finishRowCalibration(calibrateMode)
     calibrateMode = -1
+    resetPropmt()
 
   }else{
-    //turn off old calibration if on
+    //finish old calibration if on
     if(calibrateMode >= 0){
-    finishRowCalibration(calibrateMode)
-
+      finishRowCalibration(calibrateMode)
     }  
     //turn on new calibration
-    fretCount = 0
     clearKeyRow(index)
     document.getElementById(`calibrate-button-${index}`)?.classList.replace('calibrate-off','calibrate-on')
     calibrateMode = index
+    fretCount = 0
     updatePrompt()
   }
   
-  console.log(calibrateMode)
-
 }
+
+//setup page
+const attackSlider = document.getElementById('attack-slider') as HTMLInputElement
+const attackValue = document.getElementById('attack-value') as HTMLParagraphElement
+const decaySlider = document.getElementById('decay-slider') as HTMLInputElement
+const decayValue = document.getElementById('decay-value') as HTMLParagraphElement
+const monophonicButton = document.getElementById('monophonic-button') as HTMLButtonElement
+const tuningElement = document.getElementById('tuning-element') as HTMLElement
+const waveformSelect = document.getElementById('waveform-select') as HTMLSelectElement
 
 Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
@@ -240,6 +243,7 @@ setupToggleButon(monophonicButton, true, (newState: boolean)=> {monophonic = new
 //setupAttack(document.querySelector<HTMLInputElement>('#attack')!)
 
 
+resetPropmt()
 
 
 updateKeyToFreq(defaultTuning)
