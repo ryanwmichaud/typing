@@ -92,7 +92,19 @@ const rampNoteOn = (e: KeyboardEvent, freq: number, currTime:number)=>{
   gain.gain.linearRampToValueAtTime(1, currTime+attack)
   osc.start(currTime)
 }
+const rampNoteOff = (osc: OscillatorNode, gain: GainNode, decay: number)=>{
+    gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime)
+    gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime+decay)
+    osc.stop(audioCtx.currentTime+decay)
+}
+const stopAll = ()=>{
+  for(const activeNote of activeNoteMap){
+    const note = activeNote[1]
+    rampNoteOff(note[0], note[1], decay)
+  }
+  activeNoteMap.clear()
 
+}
 
 const handleKeydown = (e: KeyboardEvent)=>{
   console.log(e.key)
@@ -103,8 +115,7 @@ const handleKeydown = (e: KeyboardEvent)=>{
     console.log(keys)
     
     fretCount += 1
-    promptBox.textContent=`play string ${calibrateMode} fret ${fretCount}`
-
+    updatePrompt()
     return
   }
 
@@ -135,13 +146,6 @@ const handleKeydown = (e: KeyboardEvent)=>{
     }
   }
 }
-
-
-const rampNoteOff = (osc: OscillatorNode, gain: GainNode, decay: number)=>{
-    gain.gain.setValueAtTime(gain.gain.value, audioCtx.currentTime)
-    gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime+decay)
-    osc.stop(audioCtx.currentTime+decay)
-}
 const handleKeyup = (e: KeyboardEvent)=>{
   const note = activeNoteMap.get(e.key)
   if(note){
@@ -166,15 +170,6 @@ const handleKeyup = (e: KeyboardEvent)=>{
     }
   }
 }
-const stopAll = ()=>{
-  for(const activeNote of activeNoteMap){
-    const note = activeNote[1]
-    rampNoteOff(note[0], note[1], decay)
-  }
-  activeNoteMap.clear()
-
-}
-
 
 document.addEventListener('keydown', handleKeydown)
 document.addEventListener('keyup', handleKeyup)
@@ -193,30 +188,39 @@ const waveformSelect = document.getElementById('waveform-select') as HTMLSelectE
 
 let calibrateMode: number= -1
 
-const setCalibrateMode = (index: number)=>{
+
+const updatePrompt = ()=>{
+  if(promptBox){promptBox.textContent=`play string ${calibrateMode} fret ${fretCount+1}`}
+  else{console.log('promptbox is null')}
+
+}
+
+const finishRowCalibration = (index: number)=>{
+  document.getElementById(`calibrate-button-${index}`)?.classList.replace('calibrate-on','calibrate-off')
+  let noteSelect = document.getElementById(`note-select-${calibrateMode}`) as HTMLSelectElement
+  let octaveSelect = document.getElementById(`octave-select-${calibrateMode}`) as HTMLSelectElement
+  updateKeyToFreqRow(index, [noteSelect.value, Number(octaveSelect.value) ])
+}
+
+const handleCalibrateButton = (index: number)=>{
   
   if(calibrateMode === index){
     //turn off active calibration and update keytofreqrow
-    document.getElementById(`calibrate-button-${index}`)?.classList.replace('calibrate-on','calibrate-off')
-    let noteSelect = document.getElementById(`note-select-${calibrateMode}`) as HTMLSelectElement
-    let octaveSelect = document.getElementById(`octave-select-${calibrateMode}`) as HTMLSelectElement
-    updateKeyToFreqRow(index, [noteSelect.value, Number(octaveSelect.value) ])
+    finishRowCalibration(calibrateMode)
     calibrateMode = -1
 
   }else{
     //turn off old calibration if on
     if(calibrateMode >= 0){
-    const activeButton = document.getElementById(`calibrate-button-${calibrateMode}`)
-    activeButton?.classList.replace('calibrate-on', 'calibrate-off')
+    finishRowCalibration(calibrateMode)
+
     }  
     //turn on new calibration
     fretCount = 0
-    
-    calibrateMode = index
     clearKeyRow(index)
     document.getElementById(`calibrate-button-${index}`)?.classList.replace('calibrate-off','calibrate-on')
-
-    promptBox.textContent=`play string ${calibrateMode} fret ${fretCount}`
+    calibrateMode = index
+    updatePrompt()
   }
   
   console.log(calibrateMode)
@@ -225,7 +229,7 @@ const setCalibrateMode = (index: number)=>{
 
 Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
-  setUpNoteSelector(htmlChild, index, defaultTuning[index], calibrateMode, setCalibrateMode)
+  setUpNoteSelector(htmlChild, index, defaultTuning[index], calibrateMode, handleCalibrateButton)
 });
 setupDropDown(waveformSelect, waveform, (value: OscillatorType)=> {waveform = value})
 setupSlider(attackSlider, attackValue, (value: number)=>{attack = value})
