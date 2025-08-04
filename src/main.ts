@@ -181,13 +181,13 @@ let calibrateMode: number= -1
 const resetPropmt = ()=>{
   if(textbox1){textbox1.value=`Type to play`}
   else{console.error('textbox1 is null')}
-  if(textbox2){textbox2.textContent=`Click calibration buttons to set keys for each string`}
+  if(textbox2){textbox2.textContent=`Click calibration buttons to set keys for each string.`}
   else{console.error('textbox2 is null')} 
 }
 const updatePrompt = ()=>{
-  if(textbox1){textbox1.value=`Play string ${calibrateMode}, fret ${fretCount+1}`}
+  if(textbox1){textbox1.value=`Play String ${calibrateMode+1}, Fret ${fretCount+1}`}
   else{console.error('textbox1 is null')}
-  if(textbox2){textbox2.textContent=`turn off calibration or calibrate new row to save`}
+  if(textbox2){textbox2.textContent=`Turn off calibration or calibrate new row to save.`}
   else{console.error('textbox2 is null')}
 }
 
