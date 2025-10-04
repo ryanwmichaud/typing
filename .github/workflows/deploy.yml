@@ -17,22 +17,19 @@ jobs:
           npm install
           npm run build
 
-
-      - name: copy build to temp flat file
+        #prevent nested file structure. 
+      - name: rename build before copying to EC2
         run: |
-          rm -rf deploy-temp
-          mkdir deploy-temp
-          cp -r dist/* deploy-temp/
-
-
+          mv dist typing-build
+      
       - name: Copy files to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          source: "deploy-temp/*"
-          target: "/var/www/typing-build"
+          source: "typing-build"
+          target: "/var/www/"
           rsync: true
 
       - name: Restart Nginx
