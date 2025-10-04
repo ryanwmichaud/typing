@@ -1,6 +1,6 @@
 import { pitchedNote, updateKeyToFreqRow } from '../freq.ts'
 
-export function setUpNoteSelector(container: HTMLElement, index: number, defaultTuning: pitchedNote, InitCalibrateMode: number, setCalibrateMode: (value: number)=>void){
+export function setUpNoteSelector(container: HTMLElement, index: number, defaultTuning: pitchedNote, setCalibrateMode: (value: number)=>void){
 
     const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     const octaves = ['1', '2', '3', '4', '5', '6', '7']

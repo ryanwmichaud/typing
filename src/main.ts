@@ -232,7 +232,7 @@ const waveformSelect = document.getElementById('waveform-select') as HTMLSelectE
 
 Array.from(tuningElement.children).forEach((child, index) => {
   const htmlChild = child as HTMLElement
-  setUpNoteSelector(htmlChild, index, defaultTuning[index], calibrateMode, handleCalibrateButton)
+  setUpNoteSelector(htmlChild, index, defaultTuning[index], handleCalibrateButton)
 });
 setupDropDown(waveformSelect, waveform, (value: OscillatorType)=> {waveform = value})
 setupSlider(attackSlider, attackValue, (value: number)=>{attack = value})
