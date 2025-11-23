@@ -1,4 +1,4 @@
-import { pitchedNote, updateKeyToFreqRow } from '../freq.ts'
+import { pitchedNote, updateKeyToFreqRow } from '../../freq.ts'
 
 export function setUpNoteSelector(container: HTMLElement, index: number, defaultTuning: pitchedNote, setCalibrateMode: (value: number)=>void){
 

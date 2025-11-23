@@ -29,7 +29,7 @@ Use the up and down arrow keys for half and whole step pitch bends.
 * Navigate to the backend folder with `cd backend`
 * create a virtual python environment with `python3 -m venv .venv`
 * activate the virtual environment with `source .venv/bin/activate`
-* install dependencies with `python3 -m pip install -r requirements.txt`
+* install dependencies with `pip install -r requirements.txt`
 * run the local development server with `flask --app server run`
   * Server will run on localhost:5000 by default, note that this may interfere with airplay receiver on MacOS. 
 
