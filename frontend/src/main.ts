@@ -44,47 +44,27 @@ const handleKeydown = (e: KeyboardEvent)=>{
     if(audioEngine.monophonic){
       audioEngine.stopAll()
     }
-
     audioEngine.rampNoteOn(e.key, freq)
-
-  }
-  else{
-    switch(e.key){
-      case "ArrowDown":
-        for (const entry of activeNoteMap){
-          entry[1][0].detune.linearRampToValueAtTime(200, audioCtx.currentTime+0.07)
-        }
-        break
-
-      case "ArrowUp":
-        for (const entry of activeNoteMap){
-          entry[1][0].detune.linearRampToValueAtTime(100, audioCtx.currentTime+0.07)
-        }
-        break
+  }else{
+    if(e.key == "ArrowUp"){
+      audioEngine.detuneAll(100)
     }
+    if(e.key == "ArrowDown"){
+      audioEngine.detuneAll(-100)
+    } 
   }
+  
 }
 const handleKeyup = (e: KeyboardEvent)=>{
   //handle case if not active in rampnoteoff
-  audioEngine.rampNoteOff(e.key)
-    
-  
-    switch(e.key){
-      case "ArrowUp":
-        for (const note of audioEngine.getActiveNoteMap()){
-          note[1][0].detune.linearRampToValueAtTime(0, audioCtx.currentTime+0.07)
-        }
-        break
+  if(e.key === "ArrowUp" || e.key === "ArrowDown"){
+    audioEngine.detuneAll(0)
+  }else{
+    audioEngine.rampNoteOff(e.key)
 
-      
-      case "ArrowDown":
-        for (const note of audioEngine.getActiveNoteMap()){
-          note[1][0].detune.linearRampToValueAtTime(0, audioCtx.currentTime+0.07)
-        }
-        break
-    }
-  
+  }
 }
+
 document.addEventListener('keydown', handleKeydown)
 document.addEventListener('keyup', handleKeyup)
 window.addEventListener('blur', audioEngine.stopAll)

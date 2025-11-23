@@ -26,11 +26,9 @@ export class AudioEngine {
   gain.gain.setValueAtTime(0, currTime)
   gain.gain.linearRampToValueAtTime(1, currTime+this.attack)
   osc.start(currTime)
-  console.log(this.activeNoteMap)
   }
 
   rampNoteOff = (key :string)=>{
-    console.log('rampingoff')
     const note = this.activeNoteMap.get(key)
     if(!note){
       return
@@ -52,5 +50,13 @@ export class AudioEngine {
   }
   getActiveNoteMap = ()=>{
     return this.activeNoteMap
+  }
+  detuneAll = (cents: number)=>{
+    for (const entry of this.activeNoteMap){
+      entry[1][0].detune.linearRampToValueAtTime(cents, this.audioCtx.currentTime+0.07)
+          console.log('detune', cents)
+
+    }
+    
   }
 }
