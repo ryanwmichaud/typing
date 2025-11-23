@@ -1,0 +1,11 @@
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "<p>Hello<p>"
+
+@app.route("/users")
+def getUsers():
+    return ['one', 'tweo']
