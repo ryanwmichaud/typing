@@ -18,51 +18,60 @@
 html {
   height: 100%;
   width: 100%;
+  padding: 0;
 }
 
 body {
 margin: 0;
+height: 100%;
+padding: 0;
 }
 
 #app {
   margin: 0;
+  padding-bottom: 10px;
   min-height: 100vh;
   min-width: 100vw;
-
-
 
   background-color: rgb(78, 77, 77);
   color: rgb(255, 255, 255);
 
+  display: flex;
+  justify-content: center;
+
+
 
 }
+
+p{
+  margin: 0;
+}
+
+.textbox{
+  margin-top: 8vh;
+  width: 80vw;
+  border: none;
+  caret-color: transparent;
+  background-color: transparent;
+  color: white;
+  text-align: center;
+  
+
+}
+.textbox:focus{
+  outline: none; 
+}
+#textbox-1{
+  font-size: 7vh;
+}
+
+
 
 .content{
   width: 100%;
   margin-top: 10vh;
   display: flex;
   flex-direction: column;
-}
-
-.textbox{
-  top: 0vh;
-  margin-top: 8vh;
-  margin-left: 10vw;
-  left: 0vw;
-  width: 80vw;
-  border: none;
-  caret-color: transparent;
-  background-color: transparent;
-  color: white;
-  font-size: 7vh;
-
-}
-.textbox:focus{
-  outline: none; 
-}
-
-p{
-  margin: 0;
 }
 
 .content{
