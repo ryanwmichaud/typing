@@ -1,7 +1,4 @@
-
-
-
-export type note = [  OscillatorNode, GainNode ]
+type note = [  OscillatorNode, GainNode ]
 
 export class AudioEngine {
   private audioCtx = new AudioContext()
