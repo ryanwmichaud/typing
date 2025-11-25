@@ -2,6 +2,7 @@
           
 export const html = /*html*/`
   <div>
+    <button id='login-button'></button>
     <input class='textbox' id='textbox-1'>
     <p class='textbox' id='textbox-2'>
     <div class='content'>
